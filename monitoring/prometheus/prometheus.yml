@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'spreadable-dev'
+    environment: 'development'
+
+scrape_configs:
+  # Spreadable application metrics
+  - job_name: 'spreadable'
+    static_configs:
+      - targets: ['host.docker.internal:9090']
+        labels:
+          service: 'market-maker'
+    scrape_interval: 5s
+    scrape_timeout: 4s
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # PostgreSQL metrics (if pg_exporter is added later)
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+    scrape_interval: 30s

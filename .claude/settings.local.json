@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch:*)",
+      "Bash(bash:*)",
+      "Bash(printf \"\\\\n**Branch**: \\\\`001-polymarket-mm-bot\\\\` | **Date**: 2026-01-05 | **Spec**: [spec.md]\\(./spec.md\\)\\\\n**Input**: Feature specification from \\\\`/specs/001-polymarket-mm-bot/spec.md\\\\`\\\\n\\\\n## Summary\\\\n\\\\nBuild an automated market-making bot for Polymarket prediction markets that safely collects real-time orderbook data, executes trades within strict risk limits, and scales to 10-50 concurrent markets. The system prioritizes safety through paper trading validation, comprehensive risk controls \\(position limits, circuit breakers\\), and progressive rollout from single-market operation to multi-market production deployment. Technical approach emphasizes low-latency async processing \\(<100ms order placement\\), reliable WebSocket connectivity with automatic reconnection, and complete observability through structured logging and Prometheus metrics.\\\\n\")",
+      "Bash(__NEW_LINE__ echo \"### Source Code \\(repository root\\)\")",
+      "Bash(__NEW_LINE__ echo \"Source code src/ section added\")",
+      "Bash(__NEW_LINE__ echo \"tests/\")",
+      "Bash(__NEW_LINE__ echo \"Rest of source code tree added\")",
+      "Bash(__NEW_LINE__ echo \"**Structure Decision**: Selected Option 1 \\(Single Project\\) because this is a standalone CLI application with background services. All components \\(market data, trading engine, database client\\) run within a single Rust binary. The modular \\\\`src/\\\\` structure separates concerns \\(market_data, strategy, oms, risk\\) while maintaining tight integration for low-latency operation. Tests are organized by type \\(unit, integration, contract\\) to support TDD workflow and clear separation of test scopes.\")",
+      "Bash(__NEW_LINE__ echo \"File completed successfully\")",
+      "Bash(__NEW_LINE__ grep -n \"^## \" \"C:/code/spreadable/specs/001-polymarket-mm-bot/plan.md\")",
+      "Bash(__NEW_LINE__ grep -n \"^### \" \"C:/code/spreadable/specs/001-polymarket-mm-bot/plan.md\")",
+      "Bash(cat:*)",
+      "Bash(cargo build:*)",
+      "Bash(tree:*)"
+    ]
+  }
+}

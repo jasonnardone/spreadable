@@ -1,0 +1,45 @@
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+
+# Documentation
+*.md
+docs/
+specs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.*
+
+# Build artifacts
+target/
+!target/release/spreadable
+
+# Test data
+tests/fixtures/
+tests/data/
+
+# Logs
+*.log
+logs/
+
+# Monitoring (don't copy data directories)
+monitoring/data/
+prometheus/data/
+grafana/data/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db

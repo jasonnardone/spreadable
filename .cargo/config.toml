@@ -1,0 +1,33 @@
+[build]
+# Use all CPU cores for compilation
+jobs = -1
+
+[target.'cfg(all())']
+rustflags = [
+    # Deny all warnings in CI/production builds
+    "-D", "warnings",
+    # Additional lints to catch common issues
+    "-D", "clippy::all",
+    "-D", "clippy::pedantic",
+    "-D", "clippy::nursery",
+    # Performance lints
+    "-W", "clippy::perf",
+    # Security lints
+    "-W", "clippy::security",
+    # Correctness lints (deny)
+    "-D", "clippy::correctness",
+]
+
+[alias]
+# Development aliases
+dev-check = "clippy --all-targets --all-features -- -D warnings"
+dev-test = "test --all-features"
+dev-build = "build --all-features"
+
+# CI aliases
+ci-check = "clippy --all-targets --all-features --locked -- -D warnings -D clippy::pedantic"
+ci-test = "test --all-features --locked -- --test-threads=1"
+ci-build = "build --release --locked"
+
+# Release build
+release = "build --release"
