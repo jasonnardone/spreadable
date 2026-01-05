@@ -14,7 +14,9 @@
       "Bash(__NEW_LINE__ grep -n \"^### \" \"C:/code/spreadable/specs/001-polymarket-mm-bot/plan.md\")",
       "Bash(cat:*)",
       "Bash(cargo build:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(git push:*)",
+      "Bash(git add:*)"
     ]
   }
 }

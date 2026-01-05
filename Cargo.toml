@@ -30,6 +30,7 @@ rust_decimal = { version = "1.33", features = ["serde-with-str"] }
 # Logging and tracing
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-appender = "0.2"
 
 # Metrics
 prometheus = "0.13"
@@ -62,6 +63,7 @@ tokio-test = "0.4"
 mockall = "0.12"
 wiremock = "0.6"
 proptest = "1.4"
+tempfile = "3.8"
 
 [profile.release]
 opt-level = 3
