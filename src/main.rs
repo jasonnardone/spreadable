@@ -5,14 +5,22 @@ mod config;
 mod database;
 mod error;
 mod logging;
+mod market_data;
+mod ml;
+mod monitoring;
+mod oms;
+mod risk;
+mod strategy;
 mod types;
 
 use config::AppConfig;
 use database::DatabaseClient;
 use error::{Result, SpreadableError};
+use market_data::MarketDataService;
 use std::path::PathBuf;
 use std::process;
-use tracing::{error, info};
+use std::sync::Arc;
+use tracing::{error, info, warn};
 
 #[tokio::main]
 async fn main() {
@@ -82,25 +90,82 @@ async fn run(config: AppConfig) -> Result<()> {
     db_client.health_check().await?;
     info!("Database connection established");
 
-    // TODO: Initialize remaining components in Phase 3:
-    // - WebSocket client for market data
-    // - Strategy engine
-    // - Order management system
-    // - Risk manager
-    // - Monitoring/metrics server
+    // Initialize market data service if markets are configured
+    if !config.markets.enabled.is_empty() {
+        info!("Initializing market data collection for {} markets", config.markets.enabled.len());
 
-    info!("All systems initialized successfully");
-    info!("Spreadable is running...");
+        // Convert market IDs
+        let markets: Vec<crate::types::MarketId> = config
+            .markets
+            .enabled
+            .iter()
+            .map(|id| crate::types::MarketId::new(id.clone()))
+            .collect();
 
-    // Keep the application running
-    // In Phase 3, this will be replaced with actual service loops
-    tokio::signal::ctrl_c().await.map_err(|e| {
-        SpreadableError::Internal(format!("Failed to wait for ctrl-c: {e}"))
-    })?;
+        // Create market data service and WebSocket client
+        let exchange_config = Arc::new(config.exchange.clone());
+        let (market_data_service, ws_client) =
+            MarketDataService::new(exchange_config.clone(), db_client.clone(), markets.clone());
 
-    info!("Shutdown signal received, cleaning up...");
-    db_client.close().await;
-    info!("Shutdown complete");
+        // Spawn market data service task
+        let service_handle = tokio::spawn(async move {
+            if let Err(e) = market_data_service.run().await {
+                error!(error = %e, "Market data service error");
+            }
+        });
+
+        // Spawn WebSocket client task
+        let ws_handle = tokio::spawn(async move {
+            if let Err(e) = ws_client.run(markets).await {
+                error!(error = %e, "WebSocket client error");
+            }
+        });
+
+        info!("Market data collection started");
+
+        // TODO: Initialize remaining components:
+        // - Strategy engine
+        // - Order management system
+        // - Risk manager
+        // - Monitoring/metrics server
+
+        info!("All systems initialized successfully");
+        info!(
+            "Spreadable is running in {} mode",
+            if config.risk.paper_trading_mode {
+                "PAPER TRADING"
+            } else {
+                "LIVE TRADING"
+            }
+        );
+
+        // Wait for shutdown signal
+        tokio::signal::ctrl_c().await.map_err(|e| {
+            SpreadableError::Internal(format!("Failed to wait for ctrl-c: {e}"))
+        })?;
+
+        info!("Shutdown signal received, cleaning up...");
+
+        // Abort background tasks
+        service_handle.abort();
+        ws_handle.abort();
+
+        db_client.close().await;
+        info!("Shutdown complete");
+    } else {
+        warn!("No markets configured - bot will idle");
+        warn!("Add markets to config.markets.enabled to start data collection");
+
+        info!("All systems initialized (idle mode)");
+
+        // Wait for shutdown signal
+        tokio::signal::ctrl_c().await.map_err(|e| {
+            SpreadableError::Internal(format!("Failed to wait for ctrl-c: {e}"))
+        })?;
+
+        info!("Shutdown signal received");
+        db_client.close().await;
+    }
 
     Ok(())
 }

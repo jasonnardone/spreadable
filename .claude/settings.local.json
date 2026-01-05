@@ -16,7 +16,8 @@
       "Bash(cargo build:*)",
       "Bash(tree:*)",
       "Bash(git push:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nComplete Phase 2: Foundational Components\n\nImplement core infrastructure modules for the market-making bot:\n\n## Modules Implemented\n\n- **src/logging.rs**: Tracing-based logging with JSON/pretty formats, file rotation\n- **src/database/**: PostgreSQL client with connection pooling and CRUD queries\n  - client.rs: Connection pool management with health checks\n  - queries.rs: Market, order, position, fill, and snapshot queries\n- **src/main.rs**: Async CLI entry point with config loading and graceful shutdown\n\n## Dependencies Added\n\n- tracing-appender: File rotation for logs\n- tempfile: Test utilities for config validation\n\n## Placeholder Modules\n\nCreated module stubs for Phase 3 implementation:\n- src/market_data/: WebSocket client and orderbook management\n- src/strategy/: Trading strategy implementations\n- src/oms/: Order management system\n- src/risk/: Risk limits and circuit breaker\n- src/ml/: Ollama ML integration\n- src/monitoring/: Prometheus metrics\n\n## Testing\n\nAll modules include test stubs and #[ignore] markers for integration tests\nthat require database connectivity.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }
