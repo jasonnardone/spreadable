@@ -24,6 +24,9 @@ use tracing::{error, info, warn};
 
 #[tokio::main]
 async fn main() {
+    // Load environment variables from .env file
+    dotenv::dotenv().ok();
+
     // Parse command-line arguments
     let args = parse_args();
 

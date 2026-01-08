@@ -25,13 +25,24 @@ impl AppConfig {
     pub fn load(config_path: impl AsRef<Path>) -> Result<Self> {
         let config = Config::builder()
             .add_source(File::from(config_path.as_ref()))
-            .add_source(Environment::with_prefix("SPREADABLE"))
+            .add_source(Environment::with_prefix("SPREADABLE").separator("_"))
             .build()
             .map_err(|e| SpreadableError::Config(format!("Failed to load config: {e}")))?;
 
-        let app_config: Self = config
+        let mut app_config: Self = config
             .try_deserialize()
             .map_err(|e| SpreadableError::Config(format!("Failed to parse config: {e}")))?;
+
+        // Override with direct environment variables if present (for convenience)
+        if let Ok(db_url) = std::env::var("DATABASE_URL") {
+            app_config.database.postgres_url = db_url;
+        }
+        if let Ok(api_key) = std::env::var("POLYMARKET_API_KEY") {
+            app_config.exchange.api_key = api_key;
+        }
+        if let Ok(api_secret) = std::env::var("POLYMARKET_API_SECRET") {
+            app_config.exchange.api_secret = api_secret;
+        }
 
         app_config.validate()?;
         Ok(app_config)
