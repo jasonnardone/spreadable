@@ -12,7 +12,7 @@ license = "MIT"
 tokio = { version = "1.35", features = ["full"] }
 
 # WebSocket client
-tokio-tungstenite = "0.21"
+tokio-tungstenite = { version = "0.21", features = ["native-tls"] }
 futures-util = "0.3"
 
 # HTTP client

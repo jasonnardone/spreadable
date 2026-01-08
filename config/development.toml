@@ -3,8 +3,8 @@
 
 [exchange]
 # Polymarket CLOB API endpoints
-websocket_url = "wss://clob.polymarket.com/ws"
-rest_api_url = "https://clob.polymarket.com/api/v1"
+websocket_url = "wss://ws-subscriptions-clob.polymarket.com/ws/"
+rest_api_url = "https://clob.polymarket.com"
 
 # API credentials (override via environment variables: SPREADABLE_EXCHANGE_API_KEY, SPREADABLE_EXCHANGE_API_SECRET)
 api_key = ""
@@ -73,10 +73,12 @@ websocket_timeout_secs = 60         # Trigger if WebSocket disconnected > 60s
 
 [markets]
 # List of enabled market IDs (hex strings)
-# Start with empty array, add markets after testing
-enabled = []
+# KHL: Ak Bars Kazan vs. Barys Astana (Jan 8, 2026 @ 2:00 PM ET)
+enabled = [
+    "0x2a87ac173eee50defda521aad1c2007400b08aa7aa73581bb0d6d86048794e44"
+]
 
-# Example (uncomment and add real market IDs):
+# Example format for multiple markets:
 # enabled = [
 #     "0x1234567890abcdef1234567890abcdef12345678",
 #     "0xabcdefabcdefabcdefabcdefabcdefabcdef1234"
