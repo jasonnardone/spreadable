@@ -35,21 +35,20 @@ Automated market-making bot for Polymarket prediction markets with comprehensive
 
 ### Setup
 
-1. **Clone and build**:
-   ```bash
-   cd spreadable
-   cargo build --release
-   ```
-
-2. **Configure environment**:
+1. **Configure environment**:
    ```bash
    cp .env.example .env
-   # Edit .env with your Polymarket API credentials
+   # Edit .env with your Polymarket API credentials and database password
    ```
 
-3. **Start database**:
+2. **Start database**:
    ```bash
    docker-compose up -d postgres
+   ```
+
+3. **Build the project**:
+   ```bash
+   cargo build --release
    ```
 
 4. **Run in paper trading mode**:
