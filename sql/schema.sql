@@ -35,6 +35,12 @@ CREATE TABLE IF NOT EXISTS orderbook_snapshots (
 -- Convert to TimescaleDB hypertable
 SELECT create_hypertable('orderbook_snapshots', 'timestamp', if_not_exists => TRUE);
 
+-- Enable compression on the hypertable
+ALTER TABLE orderbook_snapshots SET (
+    timescaledb.compress,
+    timescaledb.compress_segmentby = 'market_id'
+);
+
 -- Compression policy (compress data older than 1 day)
 SELECT add_compression_policy('orderbook_snapshots', INTERVAL '1 day', if_not_exists => TRUE);
 
@@ -57,6 +63,7 @@ CREATE TABLE IF NOT EXISTS orders (
     submitted_at TIMESTAMPTZ,
     opened_at TIMESTAMPTZ,
     closed_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     paper_trading BOOLEAN NOT NULL DEFAULT TRUE,
     cancel_reason TEXT,
     rejection_reason TEXT,
@@ -110,6 +117,12 @@ CREATE TABLE IF NOT EXISTS risk_metrics (
 );
 
 SELECT create_hypertable('risk_metrics', 'timestamp', if_not_exists => TRUE);
+
+-- Enable compression on the hypertable
+ALTER TABLE risk_metrics SET (
+    timescaledb.compress
+);
+
 SELECT add_compression_policy('risk_metrics', INTERVAL '7 days', if_not_exists => TRUE);
 SELECT add_retention_policy('risk_metrics', INTERVAL '90 days', if_not_exists => TRUE);
 
@@ -177,6 +190,11 @@ CREATE TRIGGER update_markets_updated_at
 
 CREATE TRIGGER update_positions_updated_at
     BEFORE UPDATE ON positions
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_orders_updated_at
+    BEFORE UPDATE ON orders
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 

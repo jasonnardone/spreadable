@@ -1,6 +1,8 @@
 // Orderbook manager - maintains local orderbook state
 // Applies snapshots and deltas from WebSocket
 
+#![allow(dead_code)]
+
 use crate::error::{Result, SpreadableError};
 use crate::market_data::websocket_client::{
     OrderbookChange, OrderbookDeltaMsg, OrderbookSnapshotMsg,

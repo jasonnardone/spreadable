@@ -1,6 +1,8 @@
 // Error types for the application
 // Uses thiserror for ergonomic error handling
 
+#![allow(dead_code)]
+
 use std::fmt;
 use thiserror::Error;
 

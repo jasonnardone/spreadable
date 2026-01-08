@@ -1,7 +1,10 @@
 // Shared types used across all modules
 // Defines core domain entities and enums
 
+#![allow(dead_code)]
+
 use chrono::{DateTime, Utc};
+use rust_decimal::prelude::ToPrimitive;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 use std::fmt;
@@ -11,7 +14,7 @@ use uuid::Uuid;
 // Market Types
 // ============================================================================
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct MarketId(pub String);
 
 impl MarketId {

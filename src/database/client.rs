@@ -1,11 +1,13 @@
 // Database client with connection pooling
 // Manages PostgreSQL + TimescaleDB connections
 
+#![allow(dead_code)]
+
 use crate::config::DatabaseConfig;
 use crate::error::{Result, SpreadableError};
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::time::Duration;
-use tracing::{info, warn};
+use tracing::info;
 
 /// Database client with connection pool
 #[derive(Clone)]

@@ -20,6 +20,7 @@ pub struct MarketDataService {
 
 impl MarketDataService {
     /// Create a new market data service
+    #[allow(unused_variables)]
     pub fn new(
         config: Arc<ExchangeConfig>,
         db_client: DatabaseClient,

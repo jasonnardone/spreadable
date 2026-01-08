@@ -1,6 +1,8 @@
 // Database query implementations
 // CRUD operations for markets, orders, positions, etc.
 
+#![allow(dead_code)]
+
 use crate::error::{Result, SpreadableError};
 use crate::types::{
     CircuitBreakerReason, Fill, Market, MarketId, MarketStatus, Order, OrderId, OrderSide,
@@ -10,7 +12,6 @@ use chrono::{DateTime, Utc};
 use rust_decimal::Decimal;
 use sqlx::PgPool;
 use tracing::debug;
-use uuid::Uuid;
 
 // ============================================================================
 // Market Queries

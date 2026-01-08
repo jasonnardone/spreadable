@@ -37,22 +37,26 @@ Automated market-making bot for Polymarket prediction markets with comprehensive
 
 1. **Configure environment**:
    ```bash
+   cd spreadable
    cp .env.example .env
    # Edit .env with your Polymarket API credentials and database password
    ```
 
 2. **Start database**:
    ```bash
+   cd spreadable
    docker-compose up -d postgres
    ```
 
 3. **Build the project**:
    ```bash
+   cd spreadable
    cargo build --release
    ```
 
 4. **Run in paper trading mode**:
    ```bash
+   cd spreadable
    cargo run --release -- --config config/development.toml
    ```
 
